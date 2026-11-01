@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week04 - Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <header class="sticky top-0 z-[99] bg-white border-b border-black">
+        <div class="flex justify-between items-center max-w-6xl mx-auto px-4 py-4 sm:px-8">
+            <h1 class="text-xl font-bold"><a href="#">Stationery Shop</a></h1>
+            <nav class="hidden sm:block">
+                <ul class="flex gap-6 text-slate-700 text-sm">
+                    <li><a href="#" class="hover:opacity-60 transition">PRODUCTS</a></li>
+                    <li><a href="#" class="hover:opacity-60 transition">ABOUT</a></li>
+                    <li><a href="#" class="hover:opacity-60 transition">CONTACT</a></li>
+                </ul>
+            </nav>
+            <div class="w-6 h-2 border-y-2 border-black cursor-pointer sm:hidden"></div>
+        </div>
+    </header>
+    <main class="max-w-6xl mx-auto px-4 sm:px-8">
+        <h1 class="mt-10 mb-8 text-center font-bold">
+            <span class="block text-4xl tracking-wider">PRODUCTS</span>
+            <span class="block mt-2 text-lg text-gray-600">商品一覧</span>
+        </h1>
+
+        <div class="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-4 mb-16">
+            <a href="#" class="group p-4 border border-black odd:bg-pink-50 even:bg-blue-50">
+                <div class="overflow-hidden"><img src="img/ringnote.png" alt="リングノート" class="w-full group-hover:scale-[1.1] transition duration-500"></div>
+                <h2 class="mt-4 text-lg">リングノート</h2>
+                <p>¥680</p>
+                <button class="w-full mt-4 px-2 py-2 border border-black text-center group-hover:bg-black group-hover:text-white transition duration-500">詳細を見る</button>
+            </a>
+            <a href="#" class="group p-4 border border-black odd:bg-pink-50 even:bg-blue-50">
+                <div class="overflow-hidden"><img src="img/ballpoint-pen.png" alt="ボールペン" class="w-full group-hover:scale-[1.1] transition duration-500"></div>
+                <h2 class="mt-4 text-lg">ボールペン</h2>
+                <p>¥220</p>
+                <button class="w-full mt-4 px-2 py-2 border border-black text-center group-hover:bg-black group-hover:text-white transition duration-500">詳細を見る</button>
+            </a>
+            <a href="#" class="group p-4 border border-black odd:bg-pink-50 even:bg-blue-50">
+                <div class="overflow-hidden"><img src="img/marker-set.png" alt="マーカーセット" class="w-full group-hover:scale-[1.1] transition duration-500"></div>
+                <h2 class="mt-4 text-lg">マーカーセット</h2>
+                <p>¥550</p>
+                <button class="w-full mt-4 px-2 py-2 border border-black text-center group-hover:bg-black group-hover:text-white transition duration-500">詳細を見る</button>
+            </a>
+            <a href="#" class="group p-4 border border-black odd:bg-pink-50 even:bg-blue-50">
+                <div class="overflow-hidden"><img src="img/pencase.png" alt="布製ペンケース" class="w-full group-hover:scale-[1.1] transition duration-500"></div>
+                <h2 class="mt-4 text-lg">布製ペンケース</h2>
+                <p>¥1,280</p>
+                <button class="w-full mt-4 px-2 py-2 border border-black text-center group-hover:bg-black group-hover:text-white transition duration-500">詳細を見る</button>
+            </a>
+            <a href="#" class="group p-4 border border-black odd:bg-blue-50 even:bg-pink-50">
+                <div class="overflow-hidden"><img src="img/sticky-note.png" alt="付箋セット" class="w-full group-hover:scale-[1.1] transition duration-500"></div>
+                <h2 class="mt-4 text-lg">付箋セット</h2>
+                <p>¥380</p>
+                <button class="w-full mt-4 px-2 py-2 border border-black text-center group-hover:bg-black group-hover:text-white transition duration-500">詳細を見る</button>
+            </a>
+            <a href="#" class="group p-4 border border-black odd:bg-blue-50 even:bg-pink-50">
+                <div class="overflow-hidden"><img src="img/masking-tape.png" alt="マスキングテープ" class="w-full group-hover:scale-[1.1] transition duration-500"></div>
+                <h2 class="mt-4 text-lg">マスキングテープ</h2>
+                <p>¥300</p>
+                <button class="w-full mt-4 px-2 py-2 border border-black text-center group-hover:bg-black group-hover:text-white transition duration-500">詳細を見る</button>
+            </a>
+            <a href="#" class="group p-4 border border-black odd:bg-blue-50 even:bg-pink-50">
+                <div class="overflow-hidden"><img src="img/ruler.png" alt="木製定規" class="w-full group-hover:scale-[1.1] transition duration-500"></div>
+                <h2 class="mt-4 text-lg">木製定規</h2>
+                <p>¥440</p>
+                <button class="w-full mt-4 px-2 py-2 border border-black text-center group-hover:bg-black group-hover:text-white transition duration-500">詳細を見る</button>
+            </a>
+            <a href="#" class="group p-4 border border-black odd:bg-blue-50 even:bg-pink-50">
+                <div class="overflow-hidden"><img src="img/plastic-folder.png" alt="クリアファイル" class="w-full group-hover:scale-[1.1] transition duration-500"></div>
+                <h2 class="mt-4 text-lg">クリアファイル</h2>
+                <p>¥220</p>
+                <button class="w-full mt-4 px-2 py-2 border border-black text-center group-hover:bg-black group-hover:text-white transition duration-500">詳細を見る</button>
+            </a>
+        </div>
+    </main>
+  </body>
+</html>
