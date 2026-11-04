@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week05 - NPO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <header class="sticky top-0 z-[99] px-3 py-4 bg-white shadow">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-2 max-w-6xl mx-auto">
+        <h1 class="text-xl text-lime-900 font-bold"><a href="#">WITH ANIMALS</a></h1>
+        <nav>
+          <ul class="flex gap-6">
+            <li class="text-sm md:text-base hover:text-lime-700 transition"><a href="#">団体について</a></li>
+            <li class="text-sm md:text-base hover:text-lime-700 transition"><a href="#">保護活動</a></li>
+            <li class="text-sm md:text-base hover:text-lime-700 transition"><a href="#">里親になるまでの流れ</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="flex flex-col justify-center items-center gap-6 h-80 px-3 bg-lime-100 text-center">
+        <h2 class="text-2xl sm:text-4xl text-lime-900 font-bold leading-[1.5] md:leading-[1.5]">すべての動物たちが<br>安心して暮らせる未来へ。</h2>
+        <p class="hidden md:block">WITH ANIMALSは、保護犬・保護猫の命を守り、新しい家族との出会いをつなぐ活動をしています。</p>
+        <p class="block md:hidden">保護犬・保護猫の命を守り、新しい家族との出会いをつなぐ活動をしています。</p>
+        <a href="#" class="rounded-lg px-10 py-3 bg-amber-500 text-white font-bold hover:bg-amber-300 transition">里親になる</a>
+      </section>
+
+      <section class="max-w-6xl mx-auto mb-10 px-3 py-10">
+        <h2 class="text-2xl md:text-3xl text-center font-bold">― 保護活動 ―</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 mx-3 md:mx-0">
+          <div class="rounded-lg p-6 bg-lime-50 border-l-4 border-amber-500">
+            <h3 class="text-xl text-lime-900 font-bold"><span class="text-amber-600 text-4xl mr-3">01</span>保護・救助活動</h3>
+            <p class="mt-2">行き場を失った犬や猫を保護し、安全で安心できる環境を提供します。</p>
+          </div>
+          <div class="rounded-lg p-6 bg-lime-50 border-l-4 border-amber-500">
+            <h3 class="text-xl text-lime-900 font-bold"><span class="text-amber-600 text-4xl mr-3">02</span>医療・健康管理</h3>
+            <p class="mt-2">健康診断やワクチン接種を行い、一匹一匹の健康状態に合わせたケアを行います。</p>
+          </div>
+          <div class="rounded-lg p-6 bg-lime-50 border-l-4 border-amber-500">
+            <h3 class="text-xl text-lime-900 font-bold"><span class="text-amber-600 text-4xl mr-3">03</span>譲渡活動</h3>
+            <p class="mt-2">行新しい家族との出会いをサポートし、幸せな暮らしへの第一歩をつなぎます。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="py-4 bg-lime-900">
+      <p class="px-3 text-center text-sm text-lime-100">&copy; 2026 WITH ANIMALS</p>
+    </footer>
+  </body>
+</html>
