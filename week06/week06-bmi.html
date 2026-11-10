@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week06 - BMI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen flex justify-center items-center bg-red-50 text-amber-950">
+    <div class="w-full max-w-xl border-4 border-red-200 rounded-lg m-2 p-6 bg-white">
+			<div class="mb-4">
+				<h1 class="mb-2 text-2xl font-bold">BMI計算ツール</h1>
+				<p class="text-gray-600">身長と体重を入力し、測定するボタンを押してください。</p>
+			</div>
+
+			<div class="flex flex-col gap-4 mb-4 sm:flex-row">
+				<div class="w-full">
+					<label for="height" class="block mb-2 text-gray-600 font-bold">身長（cm）</label>
+					<input type="number" id="height" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg" placeholder="例：170">
+					<p id="heightError" class="hidden text-red-600 text-sm">身長を入力してください。</p>
+				</div>
+				<div class="w-full">
+					<label for="weight" class="block mb-2 text-gray-600 font-bold">体重（kg）</label>
+					<input type="number" id="weight" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg" placeholder="例：65">
+					<p id="weightError" class="hidden text-red-600 text-sm">体重を入力してください。</p>
+				</div>
+			</div>
+
+			<button id="btn" class="w-full rounded-lg mb-4 py-4 bg-red-300 font-bold hover:opacity-60 transition">計測する</button>
+
+			<div class="rounded-lg p-6 bg-red-100">
+				<h2 class="rounded-full mb-4 px-2 py-2 bg-white text-center font-bold">測定結果</h2>
+				<div class="flex justify-center gap-6 mb-4">
+					<p class="font-bold">BMI: <span id="bmi" class="text-red-400 text-3xl">-</span></p>
+					<p class="font-bold">判定: <span id="bmiCategory" class="text-red-400 text-3xl">-</span></p>
+				</div>
+				<p id="message">身長と体重を入力して、BMIを計算してみましょう！</p>
+			</div>
+    </div>
+
+		<script>
+			const hError = document.getElementById("heightError");
+			const wError = document.getElementById("weightError");
+			const btn = document.getElementById("btn");
+			const bmi = document.getElementById("bmi");
+			const category = document.getElementById("bmiCategory");
+			const message = document.getElementById("message");
+			
+			function CalcBmi(height, weight) {
+				return weight / (height / 100) ** 2;
+			};
+
+			btn.addEventListener("click", () => {
+				const height = Number(document.getElementById("height").value);
+				const weight = Number(document.getElementById("weight").value);
+				const bmiValue = CalcBmi(height, weight);
+				let bmiCategory = "-";
+
+				hError.classList.toggle("hidden", height > 0);
+				wError.classList.toggle("hidden", weight > 0);
+
+				if(height <= 0 || weight <= 0) {
+					bmi.textContent = "-";
+					bmiCategory = "-";
+					category.textContent = bmiCategory;
+					message.textContent = "身長と体重を入力して、BMIを計算してみましょう！";
+					return;
+				}
+				bmi.textContent = bmiValue.toFixed(1);
+				
+				if(bmiValue < 18.5) {
+					bmiCategory = "低体重";
+					message.textContent = "低体重の範囲です。栄養バランスの良い食事を心がけ、適度な運動も取り入れながら、健康的な体づくりを目指しましょう！";
+				} else if(bmiValue < 25) {
+					bmiCategory = "普通体重";
+					message.textContent = "普通体重の範囲です！現在の体重を維持できるよう、バランスの良い食事や適度な運動を続け、健康的な生活習慣を大切にしましょう！";
+				} else if(bmiValue < 35) {
+					bmiCategory = "肥満";
+					message.textContent = "肥満の範囲です。食事の量や栄養バランス、日々の運動習慣を少しずつ見直して、無理のない範囲で健康的な生活を目指しましょう！";
+				} else {
+					bmiCategory = "高度肥満";
+					message.textContent = "高度肥満の範囲です。健康への影響が懸念されるため、自己判断で無理な減量をせず、医療機関で健康状態について相談してみましょう。";
+				}
+
+				category.textContent = bmiCategory;
+			})
+		</script>
+  </body>
+</html>
