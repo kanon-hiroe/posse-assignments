@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week07 - ToDo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-blue-100">
+    <main class="max-w-3xl mx-auto h-full min-h-screen px-4 md:px-10 pb-10 bg-white">
+      <h1 class="mb-6 pt-6 md:pt-10 pb-2 border-b border-gray-400 text-2xl">ToDoリスト</h1>
+
+      <div id="todoListBox">
+        <section class="todo-list">
+          <div class="flex justify-between items-center mt-10 mb-4">
+            <h2 class="list-title pl-2 border-l-4 border-blue-600 text-xl font-bold">サンプルリスト</h2>
+            <div class="flex">
+              <button class="edit-list-btn flex justify-center items-center w-10 h-10 p-2 rounded-full hover:bg-gray-200 transition">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button class="delete-list-btn flex justify-center items-center w-10 h-10 p-2 rounded-full hover:bg-gray-200 transition">
+                <i class="fa-solid fa-trash-can text-red-600"></i>
+              </button>
+            </div>
+          </div>
+          <div class="flex gap-2 ml-2 mb-2">
+            <input type="text" class="task-input flex-1 px-3 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="タスク名を入力">
+            <button class="add-todo-btn w-10 h-10 px-2 py-2 rounded-full bg-blue-500 text-white font-bold hover:bg-blue-700 transition">＋</button>
+          </div>
+          <ul class="todo-ul ml-4">
+            <li class="flex justify-between items-center gap-2 py-2 border-b border-gray-400">
+              <p class="flex-1 min-w-0 break-words">ToDoサンプル1</p>
+              <div class="flex gap-2">
+                <button class="complete-todo-btn shrink-0 w-16 min-w-16 min-h-8 px-4 py-2 rounded bg-blue-300 text-xs font-bold hover:bg-blue-500 hover:text-white transition">完了</button>
+                <button class="delete-todo-btn shrink-0 w-16 px-4 py-2 rounded bg-red-50 border border-red-400 text-red-400 text-xs font-bold hover:bg-red-400 hover:text-white transition">削除</button>
+              </div>
+            </li>
+            <li class="flex justify-between items-center gap-2 py-2 border-b border-gray-400">
+              <p class="flex-1 min-w-0 break-words">ToDoサンプル2</p>
+              <div class="flex shrink-0 gap-2">
+                <button class="complete-todo-btn shrink-0 w-16 min-w-16 min-h-8 px-4 py-2 rounded bg-blue-300 text-xs font-bold hover:bg-blue-500 hover:text-white transition">完了</button>
+                <button class="delete-todo-btn shrink-0 w-16 px-4 py-2 rounded bg-red-50 border border-red-400 text-red-400 text-xs font-bold hover:bg-red-400 hover:text-white transition">削除</button>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <button id="showAddListBtn" class="block mx-auto my-10 px-10 py-2 rounded border-dashed border-2 border-gray-300 bg-gray-100 hover:bg-gray-200 transition">＋ リストを追加</button>
+      <div id="addList" class="hidden flex gap-2 my-10 ml-2">
+        <input type="text" id="listInput" class="flex-1 px-3 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="リスト名を入力">
+        <button id="addListBtn" class="px-6 py-2 rounded bg-blue-500 text-white hover:bg-blue-700 transition">追加</button>
+        <button id="cancelAddListBtn" class="w-10 h-10 p-2 rounded-full hover:bg-gray-200 transition">✕</button>
+      </div>
+
+      <div id="todoDeleteModal" class="hidden">
+        <div class="fixed inset-0 z-40 bg-black opacity-30"></div>
+        <div class="fixed inset-0 z-50 flex justify-center items-center">
+          <div class="max-w-2xl rounded-lg mx-4 p-10 bg-white text-center">
+            <p class="text-lg text-blue-600 font-bold">以下のタスクを削除してよろしいですか？</p>
+            <p id="todoDeleteConfirm" class="mt-2 break-words"></p>
+            <div class="flex justify-center items-center gap-4 mt-6">
+              <button id="modalCancel" class="rounded px-4 py-2 border border-blue-500 hover:bg-blue-100 transition">キャンセル</button>
+              <button id="taskDelete" class="rounded px-4 py-2 bg-red-400 text-white hover:bg-red-600 transition">削除する</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="listDeleteModal" class="hidden">
+        <div class="fixed inset-0 z-40 bg-black opacity-30"></div>
+        <div class="fixed inset-0 z-50 flex justify-center items-center">
+          <div class="max-w-2xl rounded-lg mx-4 p-10 bg-white text-center">
+            <p class="text-lg text-blue-600 font-bold">以下のリストを削除してよろしいですか？</p>
+            <p class="mt-2 text-sm text-gray-700">このリストに含まれるすべてのタスクも削除されます。</p>
+            <p id="listDeleteConfirm" class="mt-4 break-words"></p>
+            <div class="flex justify-center items-center gap-4 mt-6">
+              <button id="listModalCancel" class="rounded px-4 py-2 border border-blue-500 hover:bg-blue-100 transition">キャンセル</button>
+              <button id="listDelete" class="rounded px-4 py-2 bg-red-400 text-white hover:bg-red-600 transition">削除する</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="listEditModal" class="hidden">
+        <div class="fixed inset-0 z-40 bg-black opacity-30"></div>
+        <div class="fixed inset-0 z-50 flex justify-center items-center">
+          <div class="w-full max-w-lg rounded-lg mx-4 p-10 bg-white text-center">
+            <p class="text-lg text-blue-600 font-bold">リスト名の変更</p>
+            <input type="text" id="listEditInput" class="w-full mt-4 px-3 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="リスト名を入力">
+            <div class="flex justify-center items-center gap-4 mt-6">
+              <button id="listEditModalCancel" class="rounded px-4 py-2 border border-blue-500 hover:bg-blue-100 transition">キャンセル</button>
+              <button id="listEdit" class="rounded px-4 py-2 bg-blue-400 text-white hover:bg-blue-600 transition">変更する</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+		<script>
+      const todoListBox = document.getElementById("todoListBox");
+      const showAddListBtn = document.getElementById("showAddListBtn");
+      const addList = document.getElementById("addList");
+      const addListBtn = document.getElementById("addListBtn");
+      const cancelAddListBtn = document.getElementById("cancelAddListBtn");
+      const todoDeleteModal = document.getElementById("todoDeleteModal");
+      const todoDeleteConfirm = document.getElementById("todoDeleteConfirm");
+      const modalCancel = document.getElementById("modalCancel");
+      const taskDelete = document.getElementById("taskDelete");
+      const listInput = document.getElementById("listInput");
+
+      const listEditModal = document.getElementById("listEditModal");
+      const listEditInput = document.getElementById("listEditInput");
+      const listEditModalCancel = document.getElementById("listEditModalCancel");
+      const listEdit = document.getElementById("listEdit");
+
+      const listDeleteModal = document.getElementById("listDeleteModal");
+      const listDelete = document.getElementById("listDelete");
+      const listDeleteConfirm = document.getElementById("listDeleteConfirm");
+      const listModalCancel = document.getElementById("listModalCancel");
+
+      let targetList = null;
+      let targetTodo = null;
+
+      // リスト ===============================================================================
+
+      // リスト名前変更モーダル表示
+      todoListBox.addEventListener("click", (event) => {
+        const editBtn = event.target.closest(".edit-list-btn");
+        if(!editBtn) return;
+        targetList = editBtn.closest(".todo-list");
+
+        listEditInput.value = targetList.querySelector(".list-title").textContent;
+        listEditModal.classList.remove("hidden");
+      })
+
+      // リスト名前変更確定
+      listEdit.addEventListener("click", () => {
+        const changeListName = listEditInput.value;
+        if(changeListName === "" || !targetList) return;
+        targetList.querySelector(".list-title").textContent = changeListName;
+
+        listEditModal.classList.add("hidden");
+        listEditInput.value = "";
+      })
+
+      // リスト名前変更キャンセル
+      listEditModalCancel.addEventListener("click", () => {
+        listEditModal.classList.add("hidden");
+        listEditInput.value = "";
+      })
+
+      // リスト削除モーダル表示
+      todoListBox.addEventListener("click", (event) => {
+        const deleteBtn = event.target.closest(".delete-list-btn");
+        if(!deleteBtn) return;
+
+        targetList = deleteBtn.closest(".todo-list");
+
+        listDeleteConfirm.textContent = targetList.querySelector(".list-title").textContent;
+        listDeleteModal.classList.remove("hidden");
+      });
+
+      // リスト削除確定
+      listDelete.addEventListener("click", () => {
+        if(!targetList) return;
+
+        targetList.remove();
+        targetList = null;
+        listDeleteModal.classList.add("hidden");
+      });
+
+      // リスト削除キャンセル
+      listModalCancel.addEventListener("click", () => {
+        listDeleteModal.classList.add("hidden");
+      });
+
+      // リスト追加エリア表示
+      showAddListBtn.addEventListener("click", () => {
+        showAddListBtn.classList.add("hidden");
+        addList.classList.remove("hidden");
+        listInput.focus();
+      })
+
+      // リスト追加エリア非表示
+      cancelAddListBtn.addEventListener("click", () => {
+        showAddListBtn.classList.remove("hidden");
+        addList.classList.add("hidden");
+      })
+
+      // リスト追加
+      addListBtn.addEventListener("click", () => {
+        const listValue = listInput.value;
+        if(listValue === "") {
+          return;
+        }
+
+        const todoListSec = document.createElement("section");
+        todoListSec.className = "todo-list";
+
+        const listHeader = document.createElement("div");
+        listHeader.className = "flex justify-between items-center mt-10 mb-4";
+
+        const listTitleText = document.createElement("h2");
+        listTitleText.className = "list-title pl-2 border-l-4 border-blue-600 text-xl font-bold";
+        listTitleText.textContent = listValue;
+
+        const listIcons = document.createElement("div");
+        listIcons.className = "flex";
+
+        const editIconContainer = document.createElement("button");
+        editIconContainer.className = "edit-list-btn flex justify-center items-center w-10 h-10 p-2 rounded-full hover:bg-gray-200 transition";
+        const editIcon = document.createElement("i");
+        editIcon.className = "fa-solid fa-pen-to-square";
+        
+        const deleteIconContainer = document.createElement("button");
+        deleteIconContainer.className = "delete-list-btn flex justify-center items-center w-10 h-10 p-2 rounded-full hover:bg-gray-200 transition";
+        const deleteIcon = document.createElement("i");
+        deleteIcon.className = "fa-solid fa-trash-can text-red-600";
+
+        const todoInputArea = document.createElement("div");
+        todoInputArea.className = "flex gap-2 ml-2 mb-2";
+
+        const todoInput = document.createElement("input");
+        todoInput.className = "task-input flex-1 px-3 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300";
+        todoInput.type = "text";
+        todoInput.placeholder = "タスク名を入力";
+
+        const todoAddBtn = document.createElement("button");
+        todoAddBtn.className = "add-todo-btn w-10 h-10 px-2 py-2 rounded-full bg-blue-500 text-white font-bold hover:bg-blue-700 transition";
+        todoAddBtn.textContent = "＋"
+
+        const todoListContainer = document.createElement("ul");
+        todoListContainer.className = "todo-ul ml-4";
+
+        todoListSec.appendChild(listHeader);
+        todoListSec.appendChild(todoInputArea);
+        todoListSec.appendChild(todoListContainer);
+        listHeader.appendChild(listTitleText);
+        listHeader.appendChild(listIcons);
+        listIcons.appendChild(editIconContainer);
+        listIcons.appendChild(deleteIconContainer);
+        editIconContainer.appendChild(editIcon);
+        deleteIconContainer.appendChild(deleteIcon);
+        todoInputArea.appendChild(todoInput);
+        todoInputArea.appendChild(todoAddBtn);
+        todoListBox.appendChild(todoListSec);
+
+        listInput.value = "";
+
+        showAddListBtn.classList.remove("hidden");
+        addList.classList.add("hidden");
+      })
+
+
+      // ToDo ===============================================================================
+
+      todoListBox.addEventListener("click", (event) => {
+        // ToDo完了
+        const completeBtn = event.target.closest(".complete-todo-btn");
+        if(completeBtn) {
+          const todo = completeBtn.closest("li");
+          const taskName = todo.querySelector("p");
+          taskName.classList.toggle("line-through");
+          taskName.classList.toggle("text-gray-400");
+          return;
+        }
+        // ToDo削除モーダル表示
+        const deleteBtn = event.target.closest(".delete-todo-btn");
+        if(deleteBtn) {
+          targetTodo = deleteBtn.closest("li");
+          const listTitle = deleteBtn.closest(".todo-list").querySelector(".list-title");
+          todoDeleteConfirm.textContent = `【${listTitle.textContent}】${targetTodo.querySelector("p").textContent}`;
+          todoDeleteModal.classList.remove("hidden");
+        }
+      });
+
+      // ToDo削除確定
+      taskDelete.addEventListener("click", () => {
+        if(!targetTodo) return;
+
+        targetTodo.remove();
+        targetTodo = null;
+        todoDeleteModal.classList.add("hidden");
+      });
+
+      // ToDo削除キャンセル
+      modalCancel.addEventListener("click", () => {
+        todoDeleteModal.classList.add("hidden");
+      });
+
+      // ToDo追加
+      todoListBox.addEventListener("click", (event) => {
+        const addTodoBtn = event.target.closest(".add-todo-btn");
+        if(!addTodoBtn) {
+          return;
+        }
+
+        const todoList = addTodoBtn.closest(".todo-list");
+        const todoUl = todoList.querySelector(".todo-ul");
+        const todoValue = todoList.querySelector(".task-input");
+        if(todoValue.value === "") {
+          return;
+        }
+
+        const todo = document.createElement("li");
+        todo.className = "flex justify-between items-center gap-2 py-2 border-b border-gray-400";
+
+        const taskName = document.createElement("p");
+        taskName.className = "flex-1 min-w-0 break-words";
+        taskName.textContent = todoValue.value;
+
+        const todoBtns = document.createElement("div");
+        todoBtns.className = "flex shrink-0 gap-2";
+
+        const completeTodo = document.createElement("button");
+        completeTodo.textContent = "完了"
+        completeTodo.className = "complete-todo-btn shrink-0 w-16 min-w-16 min-h-8 px-4 py-2 rounded bg-blue-300 text-xs font-bold hover:bg-blue-500 hover:text-white transition";
+
+        const deleteTodo = document.createElement("button");
+        deleteTodo.textContent = "削除";
+        deleteTodo.className = "delete-todo-btn shrink-0 w-16 px-4 py-2 rounded bg-red-50 border border-red-400 text-red-400 text-xs font-bold hover:bg-red-400 hover:text-white transition";
+
+        todo.appendChild(taskName);
+        todo.appendChild(todoBtns);
+        todoBtns.appendChild(completeTodo);
+        todoBtns.appendChild(deleteTodo);
+        todoUl.appendChild(todo);
+
+        todoValue.value = "";
+      });
+		</script>
+  </body>
+</html>
