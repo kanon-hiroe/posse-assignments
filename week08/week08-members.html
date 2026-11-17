@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week08 - Members</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-fuchsia-100">
+    <main class="max-w-4xl mx-auto px-4 md:px-6">
+      <h1 class="mt-10 text-fuchsia-800 text-center tracking-[0.3em]">
+        <span class="block text-4xl font-bold uppercase">Member</span>
+        <span class="block">メンバー</span>
+      </h1>
+      <div class="flex flex-col md:flex-row items-start gap-8 mt-6">
+        <select id="sort-select" class="w-full md:w-auto px-2 py-3 rounded-lg border border-fuchsia-300 text-fuchsia-800 focus:outline-none focus:ring-2 focus:ring-fuchsia-300">
+          <option value="sort-by-role">役割順</option>
+          <option value="sort-by-name-asc">名前順（昇順）</option>
+          <option value="sort-by-name-desc">名前順（降順）</option>
+        </select>
+        <div class="flex flex-wrap gap-4">
+          <button id="all" class="px-4 py-2 bg-fuchsia-200 rounded-full border border-fuchsia-800 text-fuchsia-800 font-bold hover:bg-fuchsia-300 transition">全員</button>
+          <button id="leader" class="px-4 py-2 bg-fuchsia-200 rounded-full font-bold hover:bg-fuchsia-300 transition">リーダー</button>
+          <button id="frontend" class="px-4 py-2 bg-fuchsia-200 rounded-full font-bold hover:bg-fuchsia-300 transition">フロントエンド</button>
+          <button id="backend" class="px-4 py-2 bg-fuchsia-200 rounded-full font-bold hover:bg-fuchsia-300 transition">バックエンド</button>
+          <button id="designer" class="px-4 py-2 bg-fuchsia-200 rounded-full font-bold hover:bg-fuchsia-300 transition">デザイナー</button>
+          <button id="pr" class="px-4 py-2 bg-fuchsia-200 rounded-full font-bold hover:bg-fuchsia-300 transition">広報</button>
+        </div>
+      </div>
+      <div id="memberCards" class="grid sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6 mt-10 mb-10"></div>
+    </main>
+		<script>
+      const memberCards = document.getElementById("memberCards");
+      const sortSelect = document.getElementById("sort-select");
+
+      const all = document.getElementById("all");
+      const leader = document.getElementById("leader");
+      const frontend = document.getElementById("frontend");
+      const backend = document.getElementById("backend");
+      const designer = document.getElementById("designer");
+      const pr = document.getElementById("pr");
+
+      const roles = [all, leader, frontend, backend, designer, pr];
+      let currentRoleFilter = all;
+
+      const members = [
+        {
+          name: "佐藤 裕介",
+          kana: "さとうゆうすけ",
+          role: "リーダー",
+          comment: "使う人に喜んでもらえるサービスを作りたいです！",
+        },
+        {
+          name: "鈴木 拓也",
+          kana: "すずきたくや",
+          role: "フロントエンド",
+          comment: "細かな動きまでこだわり、快適な体験を届けたいです。",
+        },
+        {
+          name: "伊藤 悠一",
+          kana: "いとうゆういち",
+          role: "フロントエンド",
+          comment: "誰もが直感的に使える画面を作っていきたいです！",
+        },
+        {
+          name: "吉田 梨衣",
+          kana: "よしだりえ",
+          role: "バックエンド",
+          comment: "ユーザーからは見えない部分こそ、丁寧に作り込んでいきたいです。",
+        },
+        {
+          name: "田中 千夏",
+          kana: "たなかちなつ",
+          role: "デザイナー",
+          comment: "使っていて楽しいサービスにしたいです！",
+        },
+        {
+          name: "山田 里美",
+          kana: "やまださとみ",
+          role: "広報",
+          comment: "サービスをたくさんの人に知ってもらいたいです。",
+        },
+      ];
+
+      const sortMembersByNameAsc = (membersArray) => {
+        return membersArray.slice().sort((memberA, memberB) => {
+          return memberA.kana.localeCompare(memberB.kana, "ja");
+        });
+      };
+      const sortMembersByNameDesc = (membersArray) => {
+        return membersArray.slice().sort((memberA, memberB) => {
+          return memberB.kana.localeCompare(memberA.kana, "ja");
+        });
+      };
+      let filteredMembers = members.slice();
+      
+      const renderMembers = (membersArray) => {
+        memberCards.innerHTML = "";
+        membersArray.forEach((member) => {
+          const div = document.createElement("div");
+          div.className = "p-6 bg-white rounded-lg shadow";
+          div.innerHTML = `
+            <h2 class="text-xl font-bold">${member.name}</h2>
+            <p class="inline-block mt-2 px-4 py-px bg-fuchsia-100 rounded-full text-fuchsia-800 text-sm">${member.role}</p>
+            <p class="mt-2">${member.comment}</p>`;
+          memberCards.appendChild(div);
+        });
+      };
+      renderMembers(members);
+
+      const getCurrentMembers = (membersArray) => {
+        if(sortSelect.value === "sort-by-role") {
+          return membersArray;
+        } else if(sortSelect.value === "sort-by-name-asc") {
+          return sortMembersByNameAsc(membersArray);
+        } else if(sortSelect.value === "sort-by-name-desc") {
+          return sortMembersByNameDesc(membersArray);
+        } else {
+          return membersArray;
+        };
+      }
+
+      sortSelect.addEventListener("change", () => {
+        renderMembers(getCurrentMembers(filteredMembers));
+      });
+
+      roles.forEach((role) => {
+        role.addEventListener("click", function() {
+          currentRoleFilter.classList.remove("border", "border-fuchsia-800", "text-fuchsia-800");
+          currentRoleFilter = this;
+          this.classList.add("border", "border-fuchsia-800", "text-fuchsia-800");
+          filteredMembers = members.slice().filter(value => {
+            if(this.textContent === "全員") {
+              return true;
+            } else {
+              return value.role === this.textContent;
+            }
+          });
+          renderMembers(getCurrentMembers(filteredMembers));
+        });
+      })
+		</script>
+  </body>
+</html>
