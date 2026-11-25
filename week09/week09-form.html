@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week09 - Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <main class="max-w-4xl mx-auto px-4">
+      <h1 class="mt-10 text-blue-700 text-2xl text-center font-bold">ユーザー登録</h1>
+      <form id="form" class="mt-6 mb-10" novalidate>
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center py-6 border-b-2 border-gray-200">
+          <div>
+            <p class="flex md:justify-between items-center mt-2 pr-10 font-bold">お名前<span class="ml-4 px-3 py-px bg-red-500 text-white rounded text-sm font-normal">必須</span></p>
+          </div>
+          <div class="flex flex-col md:flex-row gap-4 col-span-2 mt-2 md:mt-0">
+            <div class="flex-1">
+              <label for="name1" class="text-gray-600 font-bold">
+                姓
+              </label>
+              <input type="text" id="name1" class="w-full mt-2 px-3 py-2 border border-gray-700 rounded" placeholder="山田" required>
+              <p id="name1Error" class="hidden mt-2 text-red-600 text-sm">姓を入力してください。</p>
+            </div>
+            <div class="flex-1">
+              <label for="name2" class="text-gray-600 font-bold">
+                名
+              </label>
+              <input type="text" id="name2" class="w-full mt-2 px-3 py-2 border border-gray-700 rounded" placeholder="太郎" required>
+              <p id="name2Error" class="hidden mt-2 text-red-600 text-sm">名を入力してください。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center py-6 border-b-2 border-gray-200">
+          <div>
+            <label for="email" class="flex md:justify-between items-center mt-2 pr-10 font-bold">メールアドレス<span class="ml-4 px-3 py-px bg-red-500 text-white rounded text-sm font-normal">必須</span></label>
+          </div>
+          <div class="col-span-2 mt-2">
+            <input type="email" id="email" class="w-full px-3 py-2 border border-gray-700 rounded" placeholder="example@mail.com" required>
+            <p id="emailError" class="hidden mt-2 text-red-600 text-sm">メールアドレスを入力してください。</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center py-6 border-b-2 border-gray-200">
+          <div>
+            <label for="password" class="flex md:justify-between items-center mt-2 pr-10 font-bold">パスワード<span class="ml-4 px-3 py-px bg-red-500 text-white rounded text-sm font-normal">必須</span></label>
+          </div>
+          <div class="col-span-2 mt-2">
+            <input type="password" id="password" minlength="8" class="w-full px-3 py-2 border border-gray-700 rounded" placeholder="パスワードを入力（8文字以上）" required>
+            <p id="passwordError" class="hidden mt-2 text-red-600 text-sm">パスワードを入力してください。</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center py-6 border-b-2 border-gray-200">
+          <div>
+            <label for="password2" class="flex md:justify-between items-center mt-2 pr-10 font-bold">パスワード（確認）<span class="ml-4 px-3 py-px bg-red-500 text-white rounded text-sm font-normal">必須</span></label>
+          </div>
+          <div class="col-span-2 mt-2">
+            <input type="password" id="password2" minlength="8" class="w-full px-3 py-2 border border-gray-700 rounded" placeholder="パスワードを再入力" required>
+            <p id="password2Error" class="hidden mt-2 text-red-600 text-sm">確認用パスワードを入力してください。</p>
+          </div>
+        </div>
+
+        <div class="py-6">
+          <div class="flex gap-2 justify-center items-center">
+            <input type="checkbox" id="checkbox" class="w-4 h-4" required><label for="checkbox">利用規約に同意する</label>
+          </div>
+          <p id="checkboxError" class="hidden mt-2 text-red-600 text-center text-sm">利用規約に同意してください。</p>
+        </div>
+
+        <button type="submit" id="submitBtn" class="block w-full md:w-auto md:min-w-60 mx-auto px-4 py-2 bg-blue-600 rounded text-white hover:bg-blue-800 transition">送信する</button>
+
+        <p id="successMessage" class="hidden mt-6 px-4 text-blue-600 text-center text-lg font-bold">登録が完了しました。</p>
+      </form>
+    </main>
+
+		<script>
+      const form = document.getElementById("form");
+      const name1 = document.getElementById("name1");
+      const name2 = document.getElementById("name2");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+      const password2 = document.getElementById("password2");
+      const checkbox = document.getElementById("checkbox");
+      const successMessage = document.getElementById("successMessage");
+
+      const name1Error = document.getElementById("name1Error");
+      const name2Error = document.getElementById("name2Error");
+      const emailError = document.getElementById("emailError");
+      const passwordError = document.getElementById("passwordError");
+      const password2Error = document.getElementById("password2Error");
+      const checkboxError = document.getElementById("checkboxError");
+
+      const errorArray = [name1Error, name2Error, emailError, passwordError, password2Error, checkboxError];
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const name1Val = name1.value.trim();
+        const name2Val = name2.value.trim();
+        const emailVal = email.value.trim();
+        const passwordVal = password.value;
+        const password2Val = password2.value;
+        const checkboxVal = checkbox.checked;
+
+        if(name1Val === "") {
+          name1Error.classList.remove("hidden");
+        } else {
+          name1Error.classList.add("hidden");
+        }
+        if(name2Val === "") {
+          name2Error.classList.remove("hidden");
+        } else {
+          name2Error.classList.add("hidden");
+        }
+        if(emailVal === "") {
+          emailError.textContent = "メールアドレスを入力してください。";
+          emailError.classList.remove("hidden");
+        } else if(!email.validity.valid) {
+          emailError.textContent = "正しいメールアドレスを入力してください。";
+          emailError.classList.remove("hidden");
+        } else {
+          emailError.classList.add("hidden");
+        }
+        if(passwordVal === "") {
+          passwordError.textContent = "パスワードを入力してください。";
+          passwordError.classList.remove("hidden");
+        } else if(passwordVal.length < 8) {
+          passwordError.textContent = "パスワードは8文字以上で設定してください。"
+          passwordError.classList.remove("hidden");
+        } else {
+          passwordError.classList.add("hidden");
+        }
+        if(password2Val === "") {
+          password2Error.textContent = "確認用パスワードを入力してください。";
+          password2Error.classList.remove("hidden");
+        } else if(password2Val !== passwordVal) {
+          password2Error.textContent = "同じパスワードを入力してください。";
+          password2Error.classList.remove("hidden");
+        } else {
+          password2Error.classList.add("hidden");
+        }
+        if(!checkboxVal) {
+          checkboxError.classList.remove("hidden");
+        } else {
+          checkboxError.classList.add("hidden");
+        }
+
+        const result = errorArray.every((error) => {
+          return error.classList.contains("hidden");
+        })
+        if(result) {
+          successMessage.textContent = `${name1Val} ${name2Val} さんの登録が完了しました。`;
+          successMessage.classList.remove("hidden");
+        } else {
+          successMessage.classList.add("hidden");
+        }
+      })
+		</script>
+  </body>
+</html>
