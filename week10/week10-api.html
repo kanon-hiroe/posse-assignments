@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week10 - API</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100">
+    <header class="sticky top-0 z-[99] w-full bg-white shadow">
+      <div class="px-4 py-6">
+        <h1 class="text-xl text-center font-bold">GitHubユーザー情報検索</h1>
+      </div>
+    </header>
+    <main class="max-w-3xl mx-auto px-4 py-10">
+      <form id="form">
+        <div class="flex gap-4">
+          <input id="keyword" type="text" class="w-full px-3 py-2 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="GitHubユーザー名を入力（完全一致）">
+          <button type="submit" class="w-auto min-w-20 px-4 py-2 rounded bg-violet-600 text-white hover:bg-violet-900 transition">検索</button>
+        </div>
+      </form>
+
+      <p id="status" class="hidden mt-8 text-violet-700 text-center"><span id="statusUser" class="font-bold">ユーザー名</span> <span id="statusMessage">さんが見つかりました！</span></p>
+
+      <div id="userContainer" class="hidden flex flex-col sm:flex-row gap-6 mt-6 p-4 bg-white rounded shadow"></div>
+
+      <p id="remaining" class="hidden mt-4 text-gray-600 text-center">残り検索可能回数: <span id="remainingNum" class="text-violet-600 text-xl font-bold">-</span> 回</p>
+    </main>
+
+		<script>
+      const form = document.getElementById("form");
+      const keywordInput = document.getElementById("keyword");
+
+      const status = document.getElementById("status")
+      const statusUser = document.getElementById("statusUser");
+      statusUser.textContent = "";
+      const statusMessage = document.getElementById("statusMessage");
+      const userContainer = document.getElementById("userContainer");
+
+      const remaining = document.getElementById("remaining");
+      const remainingNum = document.getElementById("remainingNum");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const keyword = keywordInput.value.trim();
+        if(!keyword) return;
+
+        statusUser.textContent = "";
+        statusMessage.textContent = "読み込み中…"
+        status.classList.remove("hidden");
+        userContainer.innerHTML = "";
+        userContainer.classList.add("hidden");
+
+        async function loadUsers() {
+          try {
+            const response = await fetch(`https://api.github.com/users/${keyword}`);
+            remaining.classList.remove("hidden");
+            remainingNum.textContent = response.headers.get("x-ratelimit-remaining");
+            if(!response.ok) {
+              if(response.status === 404) {
+                statusMessage.textContent = `ユーザー（${keyword}）が見つかりませんでした`;
+                return;
+              }
+              throw new Error("通信エラー: " + response.status);
+            }
+
+            const user = await response.json();
+            console.log(user);
+            
+            userContainer.classList.remove("hidden");
+            status.classList.remove("hidden");
+            statusUser.textContent = user.login;
+            statusMessage.textContent = "さんが見つかりました！";
+
+            const icon = document.createElement("img");
+            icon.className = "shrink-0 w-20 h-20 bg-gray-300 rounded";
+            icon.src = user.avatar_url;
+            const userBody = document.createElement("div");
+            const userInfo = document.createElement("div");
+            userInfo.className = "flex flex-wrap items-center gap-x-4 gap-y-2 mt-px";
+
+            const userName = document.createElement("p");
+            userName.className = "text-xl font-bold";
+            userName.textContent = user.name;
+            const follower = document.createElement("p");
+            follower.textContent = " フォロワー";
+            follower.className = "text-gray-600"
+            const followerNum = document.createElement("span");
+            followerNum.className = "text-black font-bold";
+            followerNum.textContent = user.followers;
+            follower.prepend(followerNum);
+
+            const repository = document.createElement("p");
+            repository.textContent = " リポジトリ"
+            repository.className = "text-gray-600"
+            const repositoryNum = document.createElement("span");
+            repositoryNum.className = "text-black font-bold";
+            repositoryNum.textContent = user.public_repos;
+            repository.prepend(repositoryNum);
+
+            const url = document.createElement("a");
+            url.href = user.html_url;
+            url.className = "text-blue-600 hover:text-blue-300 transition";
+            url.textContent = user.html_url;
+            url.target = "_blank";
+
+            const intro = document.createElement("p");
+            intro.className = "mt-2 text-gray-700";
+            intro.textContent = user.bio;
+
+
+            userInfo.appendChild(follower);
+            userInfo.appendChild(repository);
+            userInfo.appendChild(url);
+
+            userBody.appendChild(userName);
+            userBody.appendChild(userInfo);
+            userBody.appendChild(intro);
+
+            userContainer.appendChild(icon);
+            userContainer.appendChild(userBody);
+
+          } catch(error) {
+            userContainer.classList.add("hidden");
+            statusUser.textContent = "";
+            statusMessage.textContent = `取得に失敗しました（${keyword}）`;
+            console.error(error);
+          }
+        }
+        loadUsers();
+      })
+		</script>
+  </body>
+</html>
